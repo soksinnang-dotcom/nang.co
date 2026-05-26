@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Seng SokSomnang | Rose, Games & Community</title>
+    <!-- Google Fonts & Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.25s ease, border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at 10% 30%, #f0f4fa, #e2e8f0);
+            min-height: 100vh;
+            color: #0a0f1a;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            position: relative;
+        }
+
+        body.dark {
+            background: radial-gradient(circle at 10% 30%, #0b0e1a, #010101);
+            color: #f0f3fa;
+        }
+
+        #bgCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Star Canvas */
+        #starCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.6;
+        }
+
+        /* Money Rain Container */
+        .money-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9998;
+            overflow: hidden;
+        }
+        .money-note {
+            position: absolute;
+            font-size: 28px;
+            animation: fallMoney 2.5s ease-in forwards;
+            opacity: 0;
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+            pointer-events: none;
+            z-index: 9998;
+        }
+        @keyframes fallMoney {
+            0% { transform: translateY(-20vh) rotate(0deg); opacity: 1; }
+            80% { opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        .glass-card {
+            background: rgba(15, 25, 45, 0.55);
+            backdrop-filter: blur(14px);
+            border-radius: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.25s;
+        }
+
+        body:not(.dark) .glass-card {
+            background: rgba(245, 248, 255, 0.7);
+            border: 1px solid rgba(100, 120, 160, 0.3);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+        }
+
+        .hero {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 2.5rem;
+            margin-bottom: 3rem;
+            padding: 2rem;
+        }
+
+        .photo-frame {
+            flex: 0 0 200px;
+            position: relative;
+        }
+
+        .profile-img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 200, 100, 0.7);
+            box-shadow: 0 20px 30px -8px rgba(0, 0, 0, 0.5), 0 0 0 8px rgba(255, 180, 60, 0.2);
+            transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            animation: floatSoft 5s infinite alternate;
+        }
+
+        @keyframes floatSoft {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-8px); }
+        }
+
+        .glow-name {
+            font-size: clamp(2.5rem, 7vw, 4.5rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFF5E6, #FFD966, #FF9F4A);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+        }
+
+        body:not(.dark) .glow-name {
+            background: linear-gradient(135deg, #3a2c1a, #c97e2a, #b45f1b);
+            background-clip: text;
+            -webkit-background-clip: text;
+        }
+
+        .badge-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .info-chip {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            border: 1px solid rgba(255, 210, 110, 0.4);
+        }
+
+        body:not(.dark) .info-chip {
+            background: rgba(220, 230, 255, 0.7);
+            border: 1px solid rgba(200, 160, 80, 0.5);
+            color: #1e293b;
+        }
+
+        .description {
+            font-size: 1.1rem;
+            line-height: 1.5;
+            margin-top: 1rem;
+            color: #e0e6ff;
+            max-width: 600px;
+        }
+
+        body:not(.dark) .description {
+            color: #1e2a3e;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 2rem 0 1.5rem 0;
+            display: inline-block;
+            background: linear-gradient(120deg, #fff, #ffd58c);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            border-left: 4px solid #ffb347;
+            padding-left: 1rem;
+        }
+
+        body:not(.dark) .section-title {
+            background: linear-gradient(120deg, #1f2a3e, #b4570e);
+            background-clip: text;
+            -webkit-background-clip: text;
+        }
+
+        .social-grid, .games-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.8rem;
+            margin: 2rem 0;
+        }
+
+        .social-card-link, .game-card {
+            text-decoration: none;
+            background: rgba(25, 35, 55, 0.7);
+            backdrop-filter: blur(8px);
+            border-radius: 2rem;
+            padding: 1.4rem 1rem;
+            width: 170px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 200, 120, 0.3);
+            cursor: pointer;
+            animation: cardRise 4s infinite alternate ease-in-out;
+            display: block;
+        }
+
+        .game-card {
+            background: rgba(35, 45, 65, 0.75);
+        }
+
+        body:not(.dark) .social-card-link, body:not(.dark) .game-card {
+            background: rgba(245, 248, 255, 0.85);
+            border: 1px solid rgba(180, 140, 70, 0.5);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.05);
+        }
+
+        body:not(.dark) .social-card-link .social-name, body:not(.dark) .game-card .game-name {
+            background: linear-gradient(145deg, #2c3e50, #b45f1b);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .social-card-link:hover, .game-card:hover {
+            transform: scale(1.05) translateY(-8px);
+            background: rgba(60, 75, 105, 0.85);
+            border-color: #ffbc6e;
+            box-shadow: 0 20px 30px -5px black;
+        }
+
+        .social-icon, .game-icon {
+            font-size: 3.2rem;
+            margin-bottom: 0.7rem;
+        }
+
+        .social-name, .game-name {
+            font-weight: 700;
+            font-size: 1.3rem;
+            background: linear-gradient(145deg, #FFF, #ffdb9f);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .social-join, .game-desc {
+            font-size: 0.7rem;
+            color: #b9cbff;
+            margin-top: 0.4rem;
+        }
+
+        .community-box {
+            padding: 1.8rem;
+            margin: 2rem 0;
+            text-align: center;
+            background: linear-gradient(145deg, rgba(0, 30, 45, 0.7), rgba(10, 12, 28, 0.8));
+            border-radius: 2rem;
+            border: 1px solid #ffae5a80;
+        }
+
+        body:not(.dark) .community-box {
+            background: linear-gradient(145deg, rgba(240, 245, 255, 0.9), rgba(225, 235, 250, 0.9));
+            border: 1px solid #e0a458;
+        }
+
+        .btn-community {
+            display: inline-block;
+            background: #ffb347;
+            color: #0a0f1a;
+            font-weight: bold;
+            padding: 0.7rem 1.6rem;
+            border-radius: 50px;
+            margin-top: 1rem;
+            transition: all 0.2s;
+            text-decoration: none;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.3);
+            cursor: pointer;
+        }
+        .btn-community:hover {
+            background: #ff9f2e;
+            transform: scale(1.03);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 3rem;
+            font-size: 0.8rem;
+            color: #8192b0;
+            border-top: 1px dashed rgba(255,200,150,0.2);
+            padding-top: 1.5rem;
+        }
+
+        .live-toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) scale(0.9);
+            background: #141c2cee;
+            backdrop-filter: blur(20px);
+            padding: 0.7rem 1.8rem;
+            border-radius: 60px;
+            font-weight: 500;
+            color: #ffefcf;
+            border-left: 5px solid #f9a826;
+            z-index: 200;
+            transition: 0.2s ease;
+            opacity: 0;
+            pointer-events: none;
+            white-space: nowrap;
+            font-size: 0.9rem;
+            font-family: monospace;
+        }
+        .live-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+
+        /* Theme toggle button */
+        .theme-toggle-btn {
+            position: fixed;
+            top: 24px;
+            right: 28px;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(12px);
+            padding: 10px 18px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 200, 100, 0.5);
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            color: #ffefcf;
+            transition: 0.2s ease;
+        }
+        .theme-toggle-btn:hover {
+            transform: scale(1.02);
+            background: #ffb347cc;
+        }
+
+        @media (max-width: 720px) {
+            .hero { flex-direction: column; text-align: center; }
+            .social-card-link, .game-card { width: 150px; padding: 1rem 0.5rem; }
+            .live-toast { white-space: normal; width: 85%; font-size: 0.8rem; }
+            .theme-toggle-btn { top: 16px; right: 16px; padding: 6px 14px; font-size: 0.8rem; }
+        }
+
+        .ripple-effect {
+            position: fixed;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,190,80,0.6), rgba(255,100,50,0.2));
+            pointer-events: none;
+            z-index: 1000;
+            transform: scale(0);
+            animation: rippleAnim 0.7s ease-out forwards;
+        }
+        @keyframes rippleAnim {
+            to { transform: scale(8); opacity: 0; }
+        }
+
+        /* Rose Overlay */
+        .rose-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.4s ease, visibility 0s 0.4s;
+            cursor: pointer;
+        }
+        .rose-overlay.active {
+            visibility: visible;
+            opacity: 1;
+            transition: opacity 0.4s ease, visibility 0s 0s;
+        }
+        .rose-container {
+            text-align: center;
+            transform: scale(0.8);
+            animation: rosePopIn 0.6s cubic-bezier(0.34, 1.2, 0.64, 1) forwards;
+            cursor: default;
+            pointer-events: auto;
+            background: rgba(0,0,0,0.5);
+            border-radius: 80px;
+            padding: 50px 70px;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 200, 150, 0.4);
+        }
+        @keyframes rosePopIn {
+            0% { transform: scale(0.2) rotate(-5deg); opacity: 0; }
+            60% { transform: scale(1.08) rotate(2deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+        .rose-emoji {
+            font-size: 120px;
+            animation: bounceRose 1.2s ease-in-out infinite;
+            display: inline-block;
+            filter: drop-shadow(0 8px 20px rgba(255,80,80,0.5));
+        }
+        @keyframes bounceRose {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-15px) scale(1.05); }
+        }
+        .welcome-text {
+            margin-top: 25px;
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #ffd89b, #ffb347, #ff9a5a);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: 2px;
+        }
+        .sub-welcome {
+            font-size: 1rem;
+            color: #ffe0b5;
+            margin-top: 12px;
+            font-style: italic;
+        }
+        .close-rose-btn {
+            margin-top: 30px;
+            background: rgba(255, 200, 100, 0.3);
+            backdrop-filter: blur(8px);
+            border: 1px solid #ffcc88;
+            padding: 10px 28px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #fff5e6;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-block;
+            font-family: 'Inter', sans-serif;
+        }
+        .close-rose-btn:hover {
+            background: #ffb347;
+            color: #1e1a2f;
+            transform: scale(1.05);
+            border-color: #ffdd99;
+            box-shadow: 0 0 20px rgba(255,180,0,0.5);
+        }
+        @keyframes fadeOutRose {
+            from { opacity: 1; visibility: visible; }
+            to { opacity: 0; visibility: hidden; }
+        }
+        .rose-fade-out {
+            animation: fadeOutRose 0.6s forwards;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="bgCanvas"></canvas>
+<canvas id="starCanvas"></canvas>
+
+<!-- Money Rain Container -->
+<div id="moneyRain" class="money-rain"></div>
+
+<!-- Rose Emoji Overlay -->
+<div id="roseOverlay" class="rose-overlay">
+    <div class="rose-container">
+        <div class="rose-emoji">🌹</div>
+        <div class="welcome-text">Welcome, dear friend!</div>
+        <div class="sub-welcome">🌸 A sweet melody just for you 🌸</div>
+        <button class="close-rose-btn" id="closeRoseBtn">✨ Close & Claim Money Rain ✨</button>
+    </div>
+</div>
+
+<!-- Theme Toggle Button -->
+<div class="theme-toggle-btn" id="themeToggleBtn">
+    <i class="fas fa-moon" id="themeIcon"></i>
+    <span id="themeText">Dark Mode</span>
+</div>
+
+<div class="container">
+    <div class="hero glass-card">
+        <div class="photo-frame">
+            <img src="https://scontent.fpnh5-4.fna.fbcdn.net/v/t39.30808-6/704851271_878771515253298_8075749327550438314_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeEJVQ_orJ_DEpr4ncCa5b0DhMXutVdqfJqExe61V2p8mq9Zv3zvYy57vTXX6DHzjHSuBnO9CTjTqcZebU9tLA51&_nc_ohc=2o4GoMf34GkQ7kNvwFh3wYp&_nc_oc=AdrYRuC45LYtXfvSmK5peN5zem5w23-OGChdHLkpRH7MzhXCiys1QsY49idFbz4tWDE&_nc_zt=23&_nc_ht=scontent.fpnh5-4.fna&_nc_gid=7Xea6cmUviOl7XG1rFis4Q&_nc_ss=7b2a8&oh=00_Af7kEQyzWEAbfbtol_2hpjsKaRusY_Ya_rccEPW5Vx9IKw&oe=6A1B12F9" alt="Seng SokSomnang Profile" class="profile-img" id="profileAvatar">
+        </div>
+        <div class="hero-info">
+            <h1 class="glow-name">Seng SokSomnang</h1>
+            <div class="badge-info">
+                <div class="info-chip"><i class="fas fa-calendar-alt"></i> Age: 17 years</div>
+                <div class="info-chip"><i class="fas fa-map-marker-alt"></i> Country: Cambodia 🇰🇭</div>
+                <div class="info-chip"><i class="fas fa-code"></i> Creator & Developer & Gamer</div>
+            </div>
+            <div class="description">
+                ✨ Hello! I'm Seng SokSomnang — passionate creator, tech builder, and gamer! <br>
+                🌹💰 <strong>Close the rose for money rain!</strong> Sweet melody on open. Check out my favorite games below!
+            </div>
+        </div>
+    </div>
+
+    <!-- Social Media Section (Connect & Join Community) -->
+    <div id="connectSection">
+        <h2 class="section-title"><i class="fab fa-rocketchat"></i> 🌐 Connect & Join Community</h2>
+        <div class="social-grid">
+            <a href="https://www.facebook.com/profile.php?id=100093613724700" target="_blank" class="social-card-link" data-platform="Facebook">
+                <div class="social-icon"><i class="fab fa-facebook"></i></div>
+                <div class="social-name">Facebook</div>
+                <div class="social-join">My Personal Account</div>
+            </a>
+            <a href="https://www.tiktok.com/@imaluzer1?is_from_webapp=1&sender_device=pc" target="_blank" class="social-card-link" data-platform="TikTok">
+                <div class="social-icon"><i class="fab fa-tiktok"></i></div>
+                <div class="social-name">TikTok</div>
+                <div class="social-join">Follow & Watch</div>
+            </a>
+            <a href="https://discord.gg/gC5XDzKheR" target="_blank" class="social-card-link" data-platform="Discord">
+                <div class="social-icon"><i class="fab fa-discord"></i></div>
+                <div class="social-name">Discord</div>
+                <div class="social-join">Community Server</div>
+            </a>
+            <a href="https://t.me/nangmare" target="_blank" class="social-card-link" data-platform="Telegram">
+                <div class="social-icon"><i class="fab fa-telegram"></i></div>
+                <div class="social-name">Telegram</div>
+                <div class="social-join">Personal Chat</div>
+            </a>
+            <!-- YouTube -->
+            <a href="https://www.youtube.com/@Soksinnang-eo6us" target="_blank" class="social-card-link" data-platform="YouTube">
+                <div class="social-icon"><i class="fab fa-youtube"></i></div>
+                <div class="social-name">YouTube</div>
+                <div class="social-join">Subscribe & Watch</div>
+            </a>
+            <!-- Twitch -->
+            <a href="" target="_blank" class="social-card-link" data-platform="Twitch">
+                <div class="social-icon"><i class="fab fa-twitch"></i></div>
+                <div class="social-name">Twitch</div>
+                <div class="social-join">Comming Soon</div>
+            </a>
+            <a href="#" target="_blank" class="social-card-link" data-platform="Instagram">
+                <div class="social-icon"><i class="fab fa-instagram"></i></div>
+                <div class="social-name">Instagram</div>
+                <div class="social-join">Coming Soon</div>
+            </a>
+            <a href="#" target="_blank" class="social-card-link" data-platform="WhatsApp">
+                <div class="social-icon"><i class="fab fa-whatsapp"></i></div>
+                <div class="social-name">WhatsApp</div>
+                <div class="social-join">Coming Soon</div>
+            </a>
+            <a href="#" target="_blank" class="social-card-link" data-platform="Line">
+                <div class="social-icon"><i class="fab fa-line"></i></div>
+                <div class="social-name">Line</div>
+                <div class="social-join">Coming Soon</div>
+            </a>
+            <a href="#" target="_blank" class="social-card-link" data-platform="X">
+                <div class="social-icon"><i class="fab fa-x-twitter"></i></div>
+                <div class="social-name">X (Twitter)</div>
+                <div class="social-join">Coming Soon</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- GAMES SECTION -->
+    <div>
+        <h2 class="section-title"><i class="fas fa-gamepad"></i> 🎮 My Favorite Games</h2>
+        <div class="games-grid">
+            <div class="game-card" data-game="Roblox">
+                <div class="game-icon"><i class="fas fa-cube"></i></div>
+                <div class="game-name">ROBLOX</div>
+                <div class="game-desc">Build & Play Adventures</div>
+            </div>
+            <div class="game-card" data-game="Minecraft">
+                <div class="game-icon"><i class="fas fa-tree"></i></div>
+                <div class="game-name">MINECRAFT</div>
+                <div class="game-desc">Survival & Creativity</div>
+            </div>
+            <div class="game-card" data-game="Genshin Impact">
+                <div class="game-icon"><i class="fas fa-dragon"></i></div>
+                <div class="game-name">GENSHIN</div>
+                <div class="game-desc">Open World RPG</div>
+            </div>
+            <div class="game-card" data-game="GTA V">
+                <div class="game-icon"><i class="fas fa-car"></i></div>
+                <div class="game-name">GTA V</div>
+                <div class="game-desc">Action & Adventure</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="community-box">
+        <h3>🤝 Become part of the <span style="color:#FFC857;">Somnang Squad</span> 🤝</h3>
+        <p>Exclusive updates, giveaways, and direct interaction. Select any social link above to join our growing family!</p>
+        <button id="joinAllBtn" class="btn-community"><i class="fas fa-globe"></i> Explore All Social</button>
+    </div>
+
+    <div class="footer-note">
+        <i class="fas fa-rose"></i> Rose Emoji • Sweet Melody • Money Rain on Close • Dark/Light Mode • Games: Roblox, Minecraft, Genshin, GTA V
+    </div>
+</div>
+
+<div id="toastMsg" class="live-toast">🌹 Sweet melody playing — close the rose for money rain! 💰</div>
+
+<script>
+    (function() {
+        // ========== STAR BACKGROUND ANIMATION ==========
+        const starCanvas = document.getElementById('starCanvas');
+        let starCtx = starCanvas.getContext('2d');
+        let starWidth, starHeight;
+        let stars = [];
+        const STAR_COUNT = 200;
+
+        function resizeStarCanvas() {
+            starWidth = window.innerWidth;
+            starHeight = window.innerHeight;
+            starCanvas.width = starWidth;
+            starCanvas.height = starHeight;
+        }
+
+        class Star {
+            constructor() {
+                this.x = Math.random() * starWidth;
+                this.y = Math.random() * starHeight;
+                this.radius = Math.random() * 2 + 0.8;
+                this.twinkleSpeed = 0.02 + Math.random() * 0.03;
+                this.opacity = Math.random() * 0.7 + 0.3;
+                this.direction = Math.random() > 0.5 ? 1 : -1;
+            }
+            update() {
+                this.opacity += this.twinkleSpeed * this.direction;
+                if (this.opacity >= 1) {
+                    this.opacity = 1;
+                    this.direction = -1;
+                } else if (this.opacity <= 0.2) {
+                    this.opacity = 0.2;
+                    this.direction = 1;
+                }
+            }
+            draw() {
+                starCtx.beginPath();
+                starCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                starCtx.fillStyle = `rgba(255, 255, 200, ${this.opacity})`;
+                starCtx.fill();
+            }
+        }
+
+        function initStars() {
+            stars = [];
+            for (let i = 0; i < STAR_COUNT; i++) {
+                stars.push(new Star());
+            }
+        }
+
+        function animateStars() {
+            if (!starCtx) return;
+            starCtx.clearRect(0, 0, starWidth, starHeight);
+            for (let star of stars) {
+                star.update();
+                star.draw();
+            }
+            requestAnimationFrame(animateStars);
+        }
+
+        window.addEventListener('resize', () => {
+            resizeStarCanvas();
+            initStars();
+        });
+        resizeStarCanvas();
+        initStars();
+        animateStars();
+
+        // ========== MONEY RAIN FUNCTION ==========
+        function startMoneyRain(duration = 4000) {
+            const moneyContainer = document.getElementById('moneyRain');
+            if (!moneyContainer) return;
+            const moneySymbols = ['💵', '💰', '💎', '💷', '💶', '💴', '🪙', '$', '€', '£', '💲', '🎉', '💸'];
+            const interval = setInterval(() => {
+                const money = document.createElement('div');
+                money.className = 'money-note';
+                const randomMoney = moneySymbols[Math.floor(Math.random() * moneySymbols.length)];
+                money.innerHTML = randomMoney;
+                money.style.left = Math.random() * 100 + '%';
+                money.style.fontSize = (22 + Math.random() * 28) + 'px';
+                money.style.animationDuration = (2 + Math.random() * 2) + 's';
+                money.style.animationDelay = Math.random() * 0.3 + 's';
+                moneyContainer.appendChild(money);
+                setTimeout(() => money.remove(), 4000);
+            }, 150);
+            setTimeout(() => clearInterval(interval), duration);
+        }
+
+        // ========== THEME TOGGLE ==========
+        const themeBtn = document.getElementById('themeToggleBtn');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeTextSpan = document.getElementById('themeText');
+        const body = document.body;
+        
+        function setTheme(theme) {
+            if (theme === 'light') {
+                body.classList.remove('dark');
+                localStorage.setItem('somnang_theme', 'light');
+                if (themeIcon) themeIcon.className = 'fas fa-sun';
+                if (themeTextSpan) themeTextSpan.innerText = 'Light Mode';
+            } else {
+                body.classList.add('dark');
+                localStorage.setItem('somnang_theme', 'dark');
+                if (themeIcon) themeIcon.className = 'fas fa-moon';
+                if (themeTextSpan) themeTextSpan.innerText = 'Dark Mode';
+            }
+        }
+        
+        function initTheme() {
+            const savedTheme = localStorage.getItem('somnang_theme');
+            if (savedTheme === 'light') setTheme('light');
+            else if (savedTheme === 'dark') setTheme('dark');
+            else {
+                const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                prefersDark ? setTheme('dark') : setTheme('light');
+            }
+        }
+        
+        function toggleTheme() {
+            const isDark = body.classList.contains('dark');
+            if (isDark) { setTheme('light'); showToastMessage('☀️ Light mode activated ☀️', 1500); }
+            else { setTheme('dark'); showToastMessage('🌙 Dark mode activated 🌙', 1500); }
+        }
+        
+        if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
+        initTheme();
+
+        // ========== SWEET MELODY ==========
+        let audioCtx = null;
+        function playSweetMelody() {
+            try {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                const now = audioCtx.currentTime;
+                const notes = [
+                    { freq: 523.25, duration: 0.5, startDelay: 0.0 },
+                    { freq: 587.33, duration: 0.5, startDelay: 0.55 },
+                    { freq: 659.25, duration: 0.6, startDelay: 1.1 },
+                    { freq: 783.99, duration: 0.6, startDelay: 1.8 },
+                    { freq: 880.00, duration: 0.7, startDelay: 2.5 },
+                    { freq: 783.99, duration: 0.5, startDelay: 3.3 },
+                    { freq: 659.25, duration: 0.5, startDelay: 3.9 },
+                    { freq: 523.25, duration: 0.9, startDelay: 4.5 },
+                    { freq: 659.25, duration: 0.5, startDelay: 5.6 },
+                    { freq: 783.99, duration: 0.5, startDelay: 6.2 },
+                    { freq: 880.00, duration: 0.7, startDelay: 6.9 },
+                    { freq: 987.77, duration: 0.6, startDelay: 7.7 },
+                    { freq: 880.00, duration: 0.5, startDelay: 8.4 },
+                    { freq: 783.99, duration: 0.8, startDelay: 9.0 },
+                    { freq: 659.25, duration: 1.0, startDelay: 9.9 }
+                ];
+                notes.forEach(note => {
+                    const osc = audioCtx.createOscillator();
+                    const gainNode = audioCtx.createGain();
+                    osc.connect(gainNode);
+                    gainNode.connect(audioCtx.destination);
+                    osc.type = 'sine';
+                    osc.frequency.value = note.freq;
+                    gainNode.gain.value = 0.4;
+                    gainNode.gain.exponentialRampToValueAtTime(0.0001, now + note.startDelay + note.duration);
+                    osc.start(now + note.startDelay);
+                    osc.stop(now + note.startDelay + note.duration);
+                });
+                const chordNotes = [523.25, 659.25, 783.99];
+                chordNotes.forEach((freq, idx) => {
+                    const oscChord = audioCtx.createOscillator();
+                    const gainChord = audioCtx.createGain();
+                    oscChord.connect(gainChord);
+                    gainChord.connect(audioCtx.destination);
+                    oscChord.type = 'sine';
+                    oscChord.frequency.value = freq;
+                    gainChord.gain.value = 0.1;
+                    gainChord.gain.exponentialRampToValueAtTime(0.0001, now + 2.5 + idx * 0.3);
+                    oscChord.start(now + 0.8);
+                    oscChord.stop(now + 3.0);
+                });
+            } catch(e) { console.log("Audio not supported", e); }
+        }
+
+        // ========== ROSE OVERLAY ==========
+        const roseOverlay = document.getElementById('roseOverlay');
+        const closeRoseBtn = document.getElementById('closeRoseBtn');
+        
+        function closeRoseOverlay() {
+            if (!roseOverlay) return;
+            startMoneyRain(5000);
+            showToastMessage('💰 MONEY RAIN! Enjoy the wealth! 💰', 3000);
+            roseOverlay.classList.add('rose-fade-out');
+            setTimeout(() => {
+                roseOverlay.classList.remove('active', 'rose-fade-out');
+                showToastMessage('🌹 Thank you! Explore my universe with prosperity! 💵', 3500);
+            }, 600);
+        }
+        
+        function showRoseWelcome() {
+            if (!roseOverlay) return;
+            roseOverlay.classList.add('active');
+            playSweetMelody();
+            setTimeout(() => {
+                if (roseOverlay && roseOverlay.classList.contains('active')) {
+                    closeRoseOverlay();
+                }
+            }, 15000);
+        }
+        
+        if (closeRoseBtn) {
+            closeRoseBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                closeRoseOverlay();
+            });
+        }
+        if (roseOverlay) {
+            roseOverlay.addEventListener('click', (e) => {
+                if (e.target === roseOverlay) closeRoseOverlay();
+            });
+        }
+
+        // ========== TOAST HELPER ==========
+        let activeToastTimeout = null;
+        function showToastMessage(msg, duration = 2200) {
+            const toastEl = document.getElementById('toastMsg');
+            if (!toastEl) return;
+            toastEl.innerText = msg;
+            toastEl.classList.add('show');
+            if (activeToastTimeout) clearTimeout(activeToastTimeout);
+            activeToastTimeout = setTimeout(() => toastEl.classList.remove('show'), duration);
+        }
+
+        // ========== CANVAS PARTICLES (Background floating) ==========
+        const canvas = document.getElementById('bgCanvas');
+        let ctx = canvas.getContext('2d');
+        let width, height, particles = [];
+        const PARTICLE_COUNT = 100;
+        
+        function resizeCanvas() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+        }
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.radius = Math.random() * 3 + 1;
+                this.speedX = (Math.random() - 0.5) * 0.3;
+                this.speedY = (Math.random() - 0.5) * 0.3;
+                const r = 200 + Math.random() * 55;
+                const g = 150 + Math.random() * 80;
+                const b = 180 + Math.random() * 75;
+                this.color = `rgba(${r}, ${g}, ${b}, 0.3)`;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if(this.x < -20) this.x = width + 20;
+                if(this.x > width + 20) this.x = -20;
+                if(this.y < -20) this.y = height + 20;
+                if(this.y > height + 20) this.y = -20;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+        }
+        
+        function initParticles() { particles = []; for(let i=0;i<PARTICLE_COUNT;i++) particles.push(new Particle()); }
+        function animateBg() { if(!ctx) return; ctx.clearRect(0,0,width,height); for(let p of particles) { p.update(); p.draw(); } requestAnimationFrame(animateBg); }
+        window.addEventListener('resize', () => { resizeCanvas(); initParticles(); });
+        resizeCanvas(); initParticles(); animateBg();
+
+        // ========== INTERACTIONS ==========
+        function addRipple(x,y) {
+            const rippleDiv = document.createElement('div');
+            rippleDiv.classList.add('ripple-effect');
+            rippleDiv.style.left = `${x-20}px`; rippleDiv.style.top = `${y-20}px`;
+            rippleDiv.style.width='40px'; rippleDiv.style.height='40px';
+            document.body.appendChild(rippleDiv);
+            setTimeout(()=>rippleDiv.remove(),700);
+        }
+        
+        function burstPetals(x,y) {
+            for(let i=0;i<25;i++) {
+                const petal = document.createElement('div');
+                petal.style.position='fixed';
+                petal.style.width=`${5+Math.random()*12}px`;
+                petal.style.height=`${5+Math.random()*12}px`;
+                petal.style.background=`radial-gradient(circle, #FFB7C5, #FF6F91)`;
+                petal.style.borderRadius='50% 50% 50% 0';
+                petal.style.transform=`rotate(${Math.random()*360}deg)`;
+                petal.style.left=`${x+(Math.random()-0.5)*70}px`;
+                petal.style.top=`${y+(Math.random()-0.5)*70}px`;
+                petal.style.pointerEvents='none';
+                petal.style.zIndex='2000';
+                petal.style.opacity='0.9';
+                petal.style.transition='transform 0.8s ease-out, opacity 0.8s';
+                document.body.appendChild(petal);
+                setTimeout(()=>{ petal.style.transform=`translate(${(Math.random()-0.5)*140}px, ${(Math.random()-0.5)*100-50}px) scale(0) rotate(${Math.random()*200}deg)`; petal.style.opacity='0'; },10);
+                setTimeout(()=>petal.remove(),800);
+            }
+        }
+
+        // ========== SOCIAL CARDS ==========
+        const socialCards = document.querySelectorAll('.social-card-link');
+        socialCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                e.preventDefault();
+                const platform = card.getAttribute('data-platform');
+                let toastMsg = '';
+                switch(platform){
+                    case 'Facebook': toastMsg='📘 Facebook — Join community! Redirecting...'; break;
+                    case 'TikTok': toastMsg='🎵 TikTok — Watch creative videos! Redirecting...'; break;
+                    case 'Discord': toastMsg='🎮 Discord — Join voice chats! Redirecting...'; break;
+                    case 'Telegram': toastMsg='✈️ Telegram — Instant updates! Redirecting...'; break;
+                    case 'YouTube': toastMsg='📺 YouTube — Subscribe for amazing content! Redirecting...'; break;
+                    case 'Twitch': toastMsg='🎬 Twitch — Watch live streams! Redirecting...'; break;
+                    case 'Instagram': toastMsg='📸 Instagram — Coming soon! Stay tuned!'; break;
+                    case 'WhatsApp': toastMsg='💚 WhatsApp — Coming soon!'; break;
+                    case 'Line': toastMsg='💚 Line — Coming soon!'; break;
+                    case 'X': toastMsg='🐦 X (Twitter) — Coming soon!'; break;
+                    default: toastMsg=`✨ Connecting to ${platform}`;
+                }
+                showToastMessage(toastMsg,1500);
+                const rect=card.getBoundingClientRect();
+                addRipple(rect.left+rect.width/2, rect.top+rect.height/2);
+                card.style.transform='scale(0.96)';
+                setTimeout(()=>{ card.style.transform=''; },150);
+                const targetUrl=card.getAttribute('href');
+                if(targetUrl && targetUrl!=='#' && targetUrl!==''){
+                    setTimeout(()=>{ window.open(targetUrl,'_blank'); },500);
+                }
+            });
+        });
+
+        // ========== GAME CARDS ==========
+        const gameCards = document.querySelectorAll('.game-card');
+        gameCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                e.preventDefault();
+                const gameName = card.getAttribute('data-game');
+                showToastMessage(`🎮 ${gameName} — One of my favorites! Let's play sometime! 🎮`, 2500);
+                const rect=card.getBoundingClientRect();
+                burstPetals(rect.left+rect.width/2, rect.top+rect.height/2);
+                addRipple(rect.left+rect.width/2, rect.top+rect.height/2);
+                startMoneyRain(2000);
+            });
+        });
+
+        // ========== EXPLORE ALL SOCIAL BUTTON ==========
+        const joinBtn = document.getElementById('joinAllBtn');
+        const connectSection = document.getElementById('connectSection');
+        
+        if(joinBtn && connectSection){
+            joinBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                // Scroll smoothly to the Connect & Join Community section
+                connectSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                showToastMessage('🌍 Explore all social platforms! Connect with me everywhere! 🎉', 3500);
+                
+                // Add visual feedback
+                const rect = joinBtn.getBoundingClientRect();
+                burstPetals(rect.left + rect.width/2, rect.top + rect.height/2);
+                addRipple(rect.left + rect.width/2, rect.top + rect.height/2);
+                startMoneyRain(2500);
+                
+                // Highlight the section briefly
+                connectSection.style.transition = 'box-shadow 0.3s';
+                connectSection.style.boxShadow = '0 0 0 3px #ffb347, 0 0 0 6px rgba(255,180,70,0.3)';
+                setTimeout(() => {
+                    connectSection.style.boxShadow = '';
+                }, 1500);
+            });
+        }
+        
+        // ========== PROFILE IMAGE CLICK ==========
+        const profileImg = document.getElementById('profileAvatar');
+        if(profileImg){
+            profileImg.addEventListener('click',()=>{
+                showToastMessage('📸 Seng SokSomnang — Cambodia 🇰🇭, 17 years — Gamer & Creator! 🌹🎮', 2400);
+                const rect=profileImg.getBoundingClientRect();
+                burstPetals(rect.left+rect.width/2, rect.top+rect.height/2);
+                startMoneyRain(3000);
+            });
+        }
+        
+        // ========== MOUSE MOVE SPARKLE ==========
+        document.body.addEventListener('mousemove', (e)=>{
+            if(Math.random()<0.04){
+                const dust=document.createElement('div');
+                dust.style.position='fixed'; dust.style.width='2px'; dust.style.height='2px';
+                dust.style.backgroundColor='#ffb7c5'; dust.style.borderRadius='50%';
+                dust.style.left=`${e.clientX}px`; dust.style.top=`${e.clientY}px`;
+                dust.style.pointerEvents='none'; dust.style.zIndex='9999'; dust.style.opacity='0.7';
+                document.body.appendChild(dust);
+                setTimeout(()=>dust.remove(),400);
+            }
+        });
+        
+        // ========== LOAD EVENT ==========
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                showRoseWelcome();
+                const photoDiv = document.querySelector('.photo-frame');
+                if(photoDiv){
+                    const r = photoDiv.getBoundingClientRect();
+                    addRipple(r.left + r.width/2, r.top + r.height/2);
+                }
+            }, 500);
+        });
+    })();
+</script>
+</body>
+</html>
