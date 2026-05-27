@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Seng SokSomnang | Rose, Games & Community</title>
+    <title>Seng SokSomnang | Lightning Bolt & Money Rain</title>
     <!-- Google Fonts & Font Awesome -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -76,6 +76,48 @@
             0% { transform: translateY(-20vh) rotate(0deg); opacity: 1; }
             80% { opacity: 1; }
             100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Lightning Bolt Animation */
+        .lightning-bolt {
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 80px;
+            z-index: 10001;
+            pointer-events: none;
+            animation: lightningStrike 1.2s ease-out forwards;
+            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.9));
+            text-shadow: 0 0 15px #ffcc00;
+        }
+        @keyframes lightningStrike {
+            0% {
+                transform: translateX(-50%) translateY(-100px) scale(0.8);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(10vh) scale(1.1);
+            }
+            20% {
+                transform: translateX(-50%) translateY(30vh) scale(1);
+            }
+            40% {
+                transform: translateX(-50%) translateY(60vh) scale(0.9);
+            }
+            60% {
+                transform: translateX(-50%) translateY(85vh) scale(1);
+                opacity: 1;
+            }
+            80% {
+                transform: translateX(-50%) translateY(100vh) scale(0.8);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateX(-50%) translateY(120vh) scale(0.5);
+                opacity: 0;
+            }
         }
 
         .container {
@@ -204,7 +246,7 @@
             -webkit-background-clip: text;
         }
 
-        .social-grid, .games-grid {
+        .social-grid, .games-grid, .youtubers-grid {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
@@ -212,7 +254,7 @@
             margin: 2rem 0;
         }
 
-        .social-card-link, .game-card {
+        .social-card-link, .game-card, .youtuber-card {
             text-decoration: none;
             background: rgba(25, 35, 55, 0.7);
             backdrop-filter: blur(8px);
@@ -227,45 +269,59 @@
             display: block;
         }
 
-        .game-card {
+        .game-card, .youtuber-card {
             background: rgba(35, 45, 65, 0.75);
         }
 
-        body:not(.dark) .social-card-link, body:not(.dark) .game-card {
+        body:not(.dark) .social-card-link, body:not(.dark) .game-card, body:not(.dark) .youtuber-card {
             background: rgba(245, 248, 255, 0.85);
             border: 1px solid rgba(180, 140, 70, 0.5);
             box-shadow: 0 6px 12px rgba(0,0,0,0.05);
         }
 
-        body:not(.dark) .social-card-link .social-name, body:not(.dark) .game-card .game-name {
+        body:not(.dark) .social-card-link .social-name, body:not(.dark) .game-card .game-name, body:not(.dark) .youtuber-card .youtuber-name {
             background: linear-gradient(145deg, #2c3e50, #b45f1b);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
         }
 
-        .social-card-link:hover, .game-card:hover {
+        .social-card-link:hover, .game-card:hover, .youtuber-card:hover {
             transform: scale(1.05) translateY(-8px);
             background: rgba(60, 75, 105, 0.85);
             border-color: #ffbc6e;
             box-shadow: 0 20px 30px -5px black;
         }
 
-        .social-icon, .game-icon {
+        .social-icon, .game-icon, .youtuber-icon {
             font-size: 3.2rem;
             margin-bottom: 0.7rem;
         }
 
-        .social-name, .game-name {
+        .youtuber-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 0.7rem;
+            border: 2px solid #ffb347;
+            transition: transform 0.3s;
+        }
+
+        .youtuber-card:hover .youtuber-img {
+            transform: scale(1.05);
+        }
+
+        .social-name, .game-name, .youtuber-name {
             font-weight: 700;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             background: linear-gradient(145deg, #FFF, #ffdb9f);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
         }
 
-        .social-join, .game-desc {
+        .social-join, .game-desc, .youtuber-desc {
             font-size: 0.7rem;
             color: #b9cbff;
             margin-top: 0.4rem;
@@ -365,9 +421,10 @@
 
         @media (max-width: 720px) {
             .hero { flex-direction: column; text-align: center; }
-            .social-card-link, .game-card { width: 150px; padding: 1rem 0.5rem; }
+            .social-card-link, .game-card, .youtuber-card { width: 150px; padding: 1rem 0.5rem; }
             .live-toast { white-space: normal; width: 85%; font-size: 0.8rem; }
             .theme-toggle-btn { top: 16px; right: 16px; padding: 6px 14px; font-size: 0.8rem; }
+            .youtuber-img { width: 60px; height: 60px; }
         }
 
         .ripple-effect {
@@ -518,12 +575,12 @@
             </div>
             <div class="description">
                 ✨ Hello! I'm Seng SokSomnang — passionate creator, tech builder, and gamer! <br>
-                🌹💰 <strong>Close the rose for money rain!</strong> Sweet melody on open. Check out my favorite games below!
+                ⚡💰 <strong>Close the rose for lightning bolt & money rain!</strong> Sweet melody on open.
             </div>
         </div>
     </div>
 
-    <!-- Social Media Section (Connect & Join Community) -->
+    <!-- Social Media Section -->
     <div id="connectSection">
         <h2 class="section-title"><i class="fab fa-rocketchat"></i> 🌐 Connect & Join Community</h2>
         <div class="social-grid">
@@ -547,17 +604,15 @@
                 <div class="social-name">Telegram</div>
                 <div class="social-join">Personal Chat</div>
             </a>
-            <!-- YouTube -->
             <a href="https://www.youtube.com/@Soksinnang-eo6us" target="_blank" class="social-card-link" data-platform="YouTube">
                 <div class="social-icon"><i class="fab fa-youtube"></i></div>
                 <div class="social-name">YouTube</div>
                 <div class="social-join">Subscribe & Watch</div>
             </a>
-            <!-- Twitch -->
-            <a href="" target="_blank" class="social-card-link" data-platform="Twitch">
+            <a href="#" target="_blank" class="social-card-link" data-platform="Twitch">
                 <div class="social-icon"><i class="fab fa-twitch"></i></div>
                 <div class="social-name">Twitch</div>
-                <div class="social-join">Comming Soon</div>
+                <div class="social-join">Coming Soon</div>
             </a>
             <a href="#" target="_blank" class="social-card-link" data-platform="Instagram">
                 <div class="social-icon"><i class="fab fa-instagram"></i></div>
@@ -609,6 +664,43 @@
         </div>
     </div>
 
+    <!-- MY FAVORITE YOUTUBERS SECTION -->
+    <div>
+        <h2 class="section-title"><i class="fab fa-youtube"></i> ⭐ My Favorite YouTubers</h2>
+        <div class="youtubers-grid">
+            <!-- Megamine -->
+            <a href="https://www.youtube.com/@Megamine" target="_blank" class="youtuber-card" data-youtuber="Megamine">
+                <img src="https://yt3.googleusercontent.com/ytc/AIdro_nrAKUn0QqsF37t1JKHiIqmFyIy7Xjvtor05ava8OZWH7A=s160-c-k-c0x00ffffff-no-rj" alt="Megamine" class="youtuber-img">
+                <div class="youtuber-name">Megamine</div>
+                <div class="youtuber-desc">Gaming & Entertainment</div>
+            </a>
+            <!-- Knoy -->
+            <a href="hhttps://www.youtube.com/@KnoY95Tv" target="_blank" class="youtuber-card" data-youtuber="Knoy">
+                <img src="https://yt3.googleusercontent.com/ytc/AIdro_lpn9CnpYpyq6FN0ydsGbUz7tHEYEJZcyyk0ZSLM7sS9ow=s160-c-k-c0x00ffffff-no-rj" alt="Knoy" class="youtuber-img">
+                <div class="youtuber-name">Knoy95 TV</div>
+                <div class="youtuber-desc">Gaming & Scammer</div>
+            </a>
+            <!-- Selena -->
+            <a href="https://www.youtube.com/@selenagaming1" target="_blank" class="youtuber-card" data-youtuber="Selena">
+                <img src="https://yt3.googleusercontent.com/ytc/AIdro_m29Phq2mNKTkD55nidmqNg5fcsqL6lXVwKTm3qhTE3xbc=s160-c-k-c0x00ffffff-no-rj" alt="Selena" class="youtuber-img">
+                <div class="youtuber-name">Selena Gaming</div>
+                <div class="youtuber-desc">Gaming & Entertainment</div>
+            </a>
+            <!-- Lyviss -->
+            <a href="https://www.youtube.com/@LyVisss" target="_blank" class="youtuber-card" data-youtuber="Lyviss">
+                <img src="https://yt3.googleusercontent.com/U2GcABx8XqaszZGJx9LLIgs80SAFuDQ1RosblJP4cAZye3FxY8M6io_AX2Ipl4QQSSEVaYbdzA=s160-c-k-c0x00ffffff-no-rj" alt="Lyviss" class="youtuber-img">
+                <div class="youtuber-name">Lyviss</div>
+                <div class="youtuber-desc">Gaming & Entertainment</div>
+            </a>
+            <!-- Annie -->
+            <a href="https://www.youtube.com/@Pechannie" target="_blank" class="youtuber-card" data-youtuber="Annie">
+                <img src="https://yt3.googleusercontent.com/PKjxRyinu0gvIoPCCme3F8BhYFubVZqXGF-W77VBJ6aVaxz_0o2BLMDHayNb0SWUszrCilUmTg=s160-c-k-c0x00ffffff-no-rj" alt="Annie" class="youtuber-img">
+                <div class="youtuber-name">Annie</div>
+                <div class="youtuber-desc">Lifestyle & Gaming & Entertainment</div>
+            </a>
+        </div>
+    </div>
+
     <div class="community-box">
         <h3>🤝 Become part of the <span style="color:#FFC857;">Somnang Squad</span> 🤝</h3>
         <p>Exclusive updates, giveaways, and direct interaction. Select any social link above to join our growing family!</p>
@@ -616,14 +708,27 @@
     </div>
 
     <div class="footer-note">
-        <i class="fas fa-rose"></i> Rose Emoji • Sweet Melody • Money Rain on Close • Dark/Light Mode • Games: Roblox, Minecraft, Genshin, GTA V
+        <i class="fas fa-bolt"></i> Lightning Bolt Strike • Money Rain • Sweet Melody • Dark/Light Mode • Favorite YouTubers
     </div>
 </div>
 
-<div id="toastMsg" class="live-toast">🌹 Sweet melody playing — close the rose for money rain! 💰</div>
+<div id="toastMsg" class="live-toast">🌹 Sweet melody playing — close the rose for Lightning Bolt & Money Rain! ⚡💰</div>
 
 <script>
     (function() {
+        // ========== LIGHTNING BOLT FUNCTION ==========
+        function strikeLightning() {
+            const lightningDiv = document.createElement('div');
+            lightningDiv.className = 'lightning-bolt';
+            lightningDiv.innerHTML = '⚡';
+            document.body.appendChild(lightningDiv);
+            setTimeout(() => {
+                if (lightningDiv && lightningDiv.parentNode) {
+                    lightningDiv.remove();
+                }
+            }, 1300);
+        }
+
         // ========== STAR BACKGROUND ANIMATION ==========
         const starCanvas = document.getElementById('starCanvas');
         let starCtx = starCanvas.getContext('2d');
@@ -808,12 +913,13 @@
         
         function closeRoseOverlay() {
             if (!roseOverlay) return;
+            strikeLightning();
             startMoneyRain(5000);
-            showToastMessage('💰 MONEY RAIN! Enjoy the wealth! 💰', 3000);
+            showToastMessage('⚡ LIGHTNING BOLT! + 💰 MONEY RAIN! Enjoy the show! 💰', 3500);
             roseOverlay.classList.add('rose-fade-out');
             setTimeout(() => {
                 roseOverlay.classList.remove('active', 'rose-fade-out');
-                showToastMessage('🌹 Thank you! Explore my universe with prosperity! 💵', 3500);
+                showToastMessage('🌹 Thank you! Lightning has struck with prosperity! 💵', 3500);
             }, 600);
         }
         
@@ -851,7 +957,7 @@
             activeToastTimeout = setTimeout(() => toastEl.classList.remove('show'), duration);
         }
 
-        // ========== CANVAS PARTICLES (Background floating) ==========
+        // ========== CANVAS PARTICLES ==========
         const canvas = document.getElementById('bgCanvas');
         let ctx = canvas.getContext('2d');
         let width, height, particles = [];
@@ -941,8 +1047,8 @@
                     case 'Discord': toastMsg='🎮 Discord — Join voice chats! Redirecting...'; break;
                     case 'Telegram': toastMsg='✈️ Telegram — Instant updates! Redirecting...'; break;
                     case 'YouTube': toastMsg='📺 YouTube — Subscribe for amazing content! Redirecting...'; break;
-                    case 'Twitch': toastMsg='🎬 Twitch — Watch live streams! Redirecting...'; break;
-                    case 'Instagram': toastMsg='📸 Instagram — Coming soon! Stay tuned!'; break;
+                    case 'Twitch': toastMsg='🎬 Twitch — Coming soon!'; break;
+                    case 'Instagram': toastMsg='📸 Instagram — Coming soon!'; break;
                     case 'WhatsApp': toastMsg='💚 WhatsApp — Coming soon!'; break;
                     case 'Line': toastMsg='💚 Line — Coming soon!'; break;
                     case 'X': toastMsg='🐦 X (Twitter) — Coming soon!'; break;
@@ -971,6 +1077,26 @@
                 burstPetals(rect.left+rect.width/2, rect.top+rect.height/2);
                 addRipple(rect.left+rect.width/2, rect.top+rect.height/2);
                 startMoneyRain(2000);
+                strikeLightning();
+            });
+        });
+
+        // ========== YOUTUBER CARDS ==========
+        const youtuberCards = document.querySelectorAll('.youtuber-card');
+        youtuberCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                e.preventDefault();
+                const youtuberName = card.getAttribute('data-youtuber');
+                showToastMessage(`📺 ${youtuberName} — One of my favorite YouTubers! Redirecting to channel... 🎬`, 2500);
+                const rect=card.getBoundingClientRect();
+                burstPetals(rect.left+rect.width/2, rect.top+rect.height/2);
+                addRipple(rect.left+rect.width/2, rect.top+rect.height/2);
+                startMoneyRain(2000);
+                strikeLightning();
+                const targetUrl = card.getAttribute('href');
+                if(targetUrl && targetUrl !== '#' && targetUrl !== ''){
+                    setTimeout(() => { window.open(targetUrl, '_blank'); }, 500);
+                }
             });
         });
 
@@ -981,17 +1107,13 @@
         if(joinBtn && connectSection){
             joinBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-                // Scroll smoothly to the Connect & Join Community section
                 connectSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 showToastMessage('🌍 Explore all social platforms! Connect with me everywhere! 🎉', 3500);
-                
-                // Add visual feedback
                 const rect = joinBtn.getBoundingClientRect();
                 burstPetals(rect.left + rect.width/2, rect.top + rect.height/2);
                 addRipple(rect.left + rect.width/2, rect.top + rect.height/2);
                 startMoneyRain(2500);
-                
-                // Highlight the section briefly
+                strikeLightning();
                 connectSection.style.transition = 'box-shadow 0.3s';
                 connectSection.style.boxShadow = '0 0 0 3px #ffb347, 0 0 0 6px rgba(255,180,70,0.3)';
                 setTimeout(() => {
@@ -1004,10 +1126,11 @@
         const profileImg = document.getElementById('profileAvatar');
         if(profileImg){
             profileImg.addEventListener('click',()=>{
-                showToastMessage('📸 Seng SokSomnang — Cambodia 🇰🇭, 17 years — Gamer & Creator! 🌹🎮', 2400);
+                showToastMessage('📸 Seng SokSomnang — Cambodia 🇰🇭, 17 years — Gamer & Creator! ⚡🌹', 2400);
                 const rect=profileImg.getBoundingClientRect();
                 burstPetals(rect.left+rect.width/2, rect.top+rect.height/2);
                 startMoneyRain(3000);
+                strikeLightning();
             });
         }
         
